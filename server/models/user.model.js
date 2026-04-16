@@ -14,7 +14,10 @@ const userSchema= new mongoose.Schema({
     password:{
         type:String,
         required:true,
-        unique:true,
+    },
+    avatar:{
+        type:String,
+        default:"https://static.vecteezy.com/system/resources/previews/046/409/821/non_2x/avatar-profile-icon-in-flat-style-male-user-profile-illustration-on-isolated-background-man-profile-sign-business-concept-vector.jpg",
     },
 
 },{timestamps:true});
