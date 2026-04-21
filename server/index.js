@@ -1,6 +1,7 @@
 const express= require("express");
 const mongoose= require("mongoose");
 const authRouter= require("./routes/auth.router.js");
+const userRouter=require("./routes/user.router.js")
 require("dotenv").config();
 const app=express();
 
@@ -13,6 +14,7 @@ mongoose.connect(process.env.MONGO).then(()=>{
 app.use(express.json());
 
 app.use("/api/auth",authRouter);
+app.use("/api/user",userRouter);
 
 app.use((err,req,res,next)=>{
     const statusCode=err.statusCode || 500;

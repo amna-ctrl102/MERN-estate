@@ -32,10 +32,12 @@ export default function Header() {
               About
             </li>
           </Link>
-          <Link to="/profile">
-            {currentUser ?(
-              <img className="rounded-full h-7 w-7 object-cover" src={currentUser.avatar} alt="profile"/>
-            ):(
+          <Link to={currentUser ? '/profile' : '/sign-in'}>
+            {currentUser ? <img
+              src={ currentUser?.avatar || "https://static.vecteezy.com/system/resources/previews/046/409/821/non_2x/avatar-profile-icon-in-flat-style-male-user-profile-illustration-on-isolated-background-man-profile-sign-business-concept-vector.jpg"}
+              alt="profile"
+              className="rounded-full h-7 w-7 object-cover"
+            /> : (
               <li className="text-slate-700 hover:underline">Sign in</li>
             )}
           </Link>
