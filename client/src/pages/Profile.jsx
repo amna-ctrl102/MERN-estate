@@ -11,24 +11,24 @@ export default function Profile() {
   const [file, setFile]=useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
-  const [formData, setFormData] = useState({});
 
   console.log(file);
 
   // Form state
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+  const [password,setpassword]=useState("")
   const [avatarUrl, setAvatarUrl] = useState("");
   console.log("Current user is : ",currentUser) 
 
-    // Pre-fill form when currentUser loads
-  useEffect(() => {
-    if (currentUser) {
-      setUsername(currentUser.username || "");
-      setEmail(currentUser.email || "");
-      setAvatarUrl(currentUser.avatar || "");
-    }
-  }, [currentUser]);
+  // Pre-fill form when currentUser loads
+    useEffect(() => {
+      if (currentUser) {
+        setUsername(currentUser.username || "");
+        setEmail(currentUser.email || "");
+        setAvatarUrl(currentUser.avatar || "");
+      }
+    }, [currentUser]);
 
   const handleFileUpload=async(file)=>{
     //FILE UPLOAD TASK
@@ -36,62 +36,56 @@ export default function Profile() {
        setFilePerc(20);
        setFilePerc(40);
        setFilePerc(50);
-      const fileName = `${Date.now()}-${file.name}`;
+       const fileName = `${Date.now()}-${file.name}`;
        const { data, error } = await supabase.storage
         .from('Avatars')
         .upload(fileName, file);
       
-      if (error) {
-        setFileUploadError(true);
-        console.log('Upload error:', error);
-        return;
-      }
-      const { data: publicUrlData } = supabase.storage
-        .from('Avatars')
-        .getPublicUrl(fileName);
+        if (error) {
+          setFileUploadError(true);
+          console.log('Upload error:', error);
+          return;
+        }
+        const { data: publicUrlData } = supabase.storage
+          .from('Avatars')
+          .getPublicUrl(fileName);
 
-      const imageUrl = publicUrlData?.publicUrl;
-      if (!imageUrl) {
-        setFileUploadError(true);
-        return;
-      }
+        const imageUrl = publicUrlData?.publicUrl;
+        if (!imageUrl) {
+          setFileUploadError(true);
+          return;
+        }
 
-      setFilePerc(100);
-      setAvatarUrl(imageUrl);
-      console.log(imageUrl);
+        setFilePerc(100);
+        setAvatarUrl(imageUrl);
+        console.log(imageUrl);
   };
   const handleUpdate = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await fetch(`/api/user/update/${currentUser._id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username,
-        email,
-        avatar: avatarUrl,
-      }),
-    });
-   
-
-    
-    const data = await res.json();
-    if (!res.ok) {
-      alert(data.message);
-      return;
-    }
-
-    
-
-    dispatch(setUser(data));
-    alert("Profile updated successfully!");
-  } catch (error) {
-    console.log(error);
-  }
-  
+    try {
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+          email,
+          password,
+          avatar: avatarUrl,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.message);
+        return;
+      }
+        dispatch(setUser(data));
+        alert("Profile updated successfully!");
+      } catch (error) {
+        console.log(error);
+      }
 };
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -150,6 +144,7 @@ export default function Profile() {
           placeholder="password"
           id="password"
           className="border p-3 rounded-lg"
+          onChange={(e)=>setpassword(e.target.value)}
         />
         <button
           className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
