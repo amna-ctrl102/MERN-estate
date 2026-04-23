@@ -1,16 +1,18 @@
 import { useSelector,useDispatch } from "react-redux";
 import {useRef,useState,useEffect} from "react";
 import { supabase } from "../supabase";
-import { setUser } from "../redux/user/userSlice";
+import { updateUserStart,updateUserSuccess,updateUserFailure, } from "../redux/user/userSlice";
 
 export default function Profile() {
   const fileRef=useRef(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,loading,error } = useSelector((state) => state.user);
   const dispatch=useDispatch();
 
   const [file, setFile]=useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
+  const [updateUser, setUpdateUser]=useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
 
   console.log(file);
 
@@ -57,13 +59,17 @@ export default function Profile() {
         }
 
         setFilePerc(100);
+        setUploadSuccess(true);
         setAvatarUrl(imageUrl);
-        console.log(imageUrl);
+        setTimeout(() => {
+          setUploadSuccess(false);
+        }, 3000);
   };
   const handleUpdate = async (e) => {
     e.preventDefault();
 
     try {
+      dispatch(updateUserStart());
       const res = await fetch(`/api/user/update/${currentUser._id}`, {
         method: "POST",
         headers: {
@@ -77,14 +83,17 @@ export default function Profile() {
         }),
       });
       const data = await res.json();
-      if (!res.ok) {
-        alert(data.message);
+      if (data.success==false) {
+        dispatch(updateUserFailure(data.message));
         return;
       }
-        dispatch(setUser(data));
-        alert("Profile updated successfully!");
+        dispatch(updateUserSuccess(data));
+        setUpdateUser(true);
+        setTimeout(() => {
+          setUpdateUser(false);
+        }, 5000);
       } catch (error) {
-        console.log(error);
+        updateUserFailure(error.message);
       }
 };
   return (
@@ -117,7 +126,7 @@ export default function Profile() {
             </span>
           ) : filePerc > 0 && filePerc < 100 ? (
             <span className="text-slate-700">{`Uploading ${filePerc}%`}</span>
-          ) : filePerc === 100 ? (
+          ) : filePerc === 100 && uploadSuccess ? (
             <span className="text-green-700">Image successfully uploaded!</span>
           ) : (
             ""
@@ -140,23 +149,26 @@ export default function Profile() {
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
-          type="text"
+          type="password"
           placeholder="password"
           id="password"
           className="border p-3 rounded-lg"
           onChange={(e)=>setpassword(e.target.value)}
         />
         <button
+          disabled={loading}
           className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
           type="submit"
         >
-          Update
+          {loading?"loading...":"Upadate"}
         </button>
       </form>
       <div className="flex justify-between mt-5">
         <span className="text-red-700 cursor-pointer"> Delete Account</span>
         <span className="text-red-700 cursor-pointer"> Sign Out</span>
       </div>
+      <p className="text-red-700 mt-4">{error? error:""}</p>
+      <p className="text-green-700 mt-4">{updateUser?"User updated Successfully":""}</p>
     </div>
   );
 }
