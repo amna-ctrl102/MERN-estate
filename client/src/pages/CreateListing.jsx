@@ -1,4 +1,74 @@
+import { useState } from "react";
+import { supabase } from "../supabase";
+
 export default function CreateListing() {
+  const [files, setFiles] = useState([]);
+  const [formData, setFormData] = useState({
+    imageUrls: [],
+  });
+  const [imageUploadError, setImageUploadError] = useState(false);
+  const [uploading, setUploading] = useState(false);
+
+  const handleImageUpload = async () => {
+    console.log("Upload button clicked");
+    if (files.length > 0 && files.length + formData.imageUrls.length < 7) {
+      setUploading(true);
+      setImageUploadError(false);
+      try {
+        const promises = files.map((file) => storeImage(file));
+        const urls = await Promise.all(promises);
+        setFormData((prev) => ({
+          ...prev,
+          imageUrls: prev.imageUrls.concat(urls),
+        }));
+        setUploading(false);
+      } catch (err) {
+        setImageUploadError("Image upload failed (2 mb max per image)");
+        setUploading(false);
+      }
+    } else {
+      setImageUploadError("You can only upload 6 images per listing");
+      setUploading(false);
+    }
+  };
+  // Supabase version of storeImage
+  const storeImage = async (file) => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const fileName = `${Date.now()}-${file.name}`;
+
+        // Upload to Supabase (bucket: state_changed)
+        const { data, error } = await supabase.storage
+          .from("listingPics")
+          .upload(fileName, file);
+
+        if (error) {
+          return reject(error);
+        }
+
+        // Get public URL
+        const { data: publicUrlData } = supabase.storage
+          .from("listingPics")
+          .getPublicUrl(fileName);
+
+        const imageUrl = publicUrlData?.publicUrl;
+
+        if (!imageUrl) {
+          return reject("Failed to get image URL");
+        }
+
+        resolve(imageUrl);
+      } catch (err) {
+        reject(err);
+      }
+    });
+  };
+  const handleRemoveImage = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      imageUrls: prev.imageUrls.filter((_, i) => i !== index),
+    }));
+  };
   return (
     <main className="p-3 max-w-4xl mx-auto">
       <h1 className="text-3xl font-semibold text-center my-7">
@@ -107,15 +177,53 @@ export default function CreateListing() {
           </div>
         </div>
         <div className="flex flex-col flex-1 gap-4">
-            <p className="font-semibold">
-                Images:
-                <span className="text-gray-600 ml-2">The first image will be the cover (max 6)</span>
-            </p>
-            <div className="flex gap-4">
-                <input className="p-3 border border-gray-300 rounded w-full" type="file" id="images" accept="image/*" multiple/>
-                <button className="p-3 text-green-700 border border-green-700 rounded hover:shadow-lg disabled:opacity-80">Upload</button>
+          <p className="font-semibold">
+            Images:
+            <span className="text-gray-600 ml-2">
+              The first image will be the cover (max 6)
+            </span>
+          </p>
+          <div className="flex gap-4">
+            <input
+              onChange={(e) => setFiles(Array.from(e.target.files))}
+              className="p-3 border border-gray-300 rounded w-full"
+              type="file"
+              id="images"
+              accept="image/*"
+              multiple
+            />
+            <button
+              type="button"
+              onClick={handleImageUpload}
+              disabled={uploading}
+              className="p-3 text-green-700 border border-green-700 rounded hover:shadow-lg disabled:opacity-80"
+            >
+              {uploading ? "Uploading.." : "Upload"}
+            </button>
+          </div>
+          <p className="text-red-700">{imageUploadError && imageUploadError}</p>
+          {formData.imageUrls.map((url, index) => (
+            <div
+              key={index}
+              className="flex items-center justify-between p-3 border border-slate-300 gap-4 "
+            >
+              <img
+                src={url}
+                alt="listing"
+                className="w-20 h-20 object-contain rounded-lg "
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveImage(index)}
+                className="p-3 bg-red-700 text-white rounded-lg uppercase hover:opacity-75 cursor-pointer"
+              >
+                Delete
+              </button>
             </div>
-            <button className="p-3 bg-slate-700 text-white uppercase rounded-lg hover:opacity-95 disabled:opacity-80">Create Listing</button>
+          ))}
+          <button className="p-3 bg-slate-700 text-white uppercase rounded-lg hover:opacity-95 disabled:opacity-80">
+            Create Listing
+          </button>
         </div>
       </form>
     </main>
