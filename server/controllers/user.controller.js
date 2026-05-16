@@ -1,3 +1,4 @@
+const Listing = require("../models/listing.model.js");
 const User=require("../models/user.model.js");
 const { errorHandler } = require("../utils/error");
 const bcryptjs = require("bcryptjs");
@@ -42,7 +43,21 @@ const deleteUser=async(req,res,next)=>{
     }
 };
 
+const getUserListings=async(req,res,next)=>{
+    if(req.user.id === req.params.id){
+        try{
+            const listings= await Listing.find({userRef:req.params.id});
+            return res.status(200).json(listings);
+        }catch(error){
+            next(error);
+        }
+    }else{
+        return next(errorHandler(401,"You can only view your listings!"));
+    }
+};
+
 module.exports={
     updateUser,
     deleteUser,
+    getUserListings,
 } 
