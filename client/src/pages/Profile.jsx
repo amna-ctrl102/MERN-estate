@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useRef, useState, useEffect } from "react";
 import { supabase } from "../supabase";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 import {
   updateUserStart,
   updateUserSuccess,
@@ -24,6 +24,8 @@ export default function Profile() {
   const [fileUploadError, setFileUploadError] = useState(false);
   const [updateUser, setUpdateUser] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
+  const [showListingError, setShowListingError] = useState(false);
+  const [userListing, setUserListing] = useState([]);
 
   console.log(file);
 
@@ -112,11 +114,11 @@ export default function Profile() {
   const handleDeleteUser = async () => {
     try {
       dispatch(deleteUserStart());
-      const res=await fetch(`/api/user/delete/${currentUser._id}`,{
-        method:"DELETE",
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
       });
-      const data=await res.json();
-      if(data.success===false){
+      const data = await res.json();
+      if (data.success === false) {
         dispatch(deleteUserFailure(data.message));
         return;
       }
@@ -126,26 +128,41 @@ export default function Profile() {
     }
   };
 
-  const handleSignOut=async()=>{
-    try{
+  const handleSignOut = async () => {
+    try {
       dispatch(signOutUserStart());
-      const res=await fetch("/api/auth/signout",{
-        method:"GET",
+      const res = await fetch("/api/auth/signout", {
+        method: "GET",
       });
-      const data= await res.json();
-      if(data.success===false){
+      const data = await res.json();
+      if (data.success === false) {
         dispatch(signOutUserFailure(data.message));
         return;
       }
       dispatch(signOutUserSuccess(data));
-    }catch(error){
+    } catch (error) {
       dispatch(signOutUserFailure(error.message));
+    }
+  };
+
+  const handleShowListings = async () => {
+    try {
+      setShowListingError(false);
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success === false) {
+        setShowListingError(true);
+        return;
+      }
+      setUserListing(data);
+    } catch (error) {
+      setShowListingError(true);
     }
   };
 
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-4">Profile</h1>
+      <h1 className="text-3xl font-semibold text-center my-3">Profile</h1>
       <form className="flex flex-col gap-3" onSubmit={handleUpdate}>
         <input
           type="file"
@@ -213,21 +230,68 @@ export default function Profile() {
         >
           {loading ? "loading..." : "Upadate"}
         </button>
-        <Link className="bg-green-700 text-white p-3 rounded-lg text-center uppercase hover:opacity-95" to={"/create-listing"}> Create Listing</Link>
+        <Link
+          className="bg-green-700 text-white p-3 rounded-lg text-center uppercase hover:opacity-95"
+          to={"/create-listing"}
+        >
+          {" "}
+          Create Listing
+        </Link>
       </form>
-      <div className="flex justify-between mt-5">
+      <div className="flex justify-between mt-4">
         <span
           onClick={handleDeleteUser}
           className="text-red-700 cursor-pointer"
         >
           Delete Account
         </span>
-        <span onClick={handleSignOut} className="text-red-700 cursor-pointer"> Sign Out</span>
+        <span onClick={handleSignOut} className="text-red-700 cursor-pointer">
+          {" "}
+          Sign Out
+        </span>
       </div>
-      <p className="text-red-700 mt-4">{error ? error : ""}</p>
-      <p className="text-green-700 mt-4">
+      <p className="text-red-700 mt-3">{error ? error : ""}</p>
+      <p className="text-green-700 mt-3">
         {updateUser ? "User updated Successfully" : ""}
       </p>
+      <button onClick={handleShowListings} className="text-green-700 w-full">
+        Show Listings
+      </button>
+      <p className="text-red-700 mt-3">
+        {showListingError ? "Error showing listings" : ""}
+      </p>
+      {userListing &&
+        userListing.length > 0 &&
+        <div className="flex flex-col gap-4">
+          <h1 className="text-center text-2xl font-semibold mt-7">Your Listings</h1>
+          {userListing.map((listing) => {
+            return (
+              <div
+                key={listing._id}
+                className=" border border-gray-200 rounded-lg p-3 flex justify-between items-center gap-4"
+              >
+                <Link to={`/listing/${listing._id}`}>
+                  <img
+                    src={listing.imageUrls[0]}
+                    alt="Listing Cover Image"
+                    className="h-16 w-16 object-contain"
+                  />
+                </Link>
+                <Link
+                  to={`/listing/${listing._id}`}
+                  className="text-slate-700 font-semibold flex-1 hover:underline truncate"
+                >
+                  <p>{listing.name}</p>
+                </Link>
+                <div className="flex flex-col items-center">
+                  <button className="text-red-700 uppercase">Delete</button>
+                  <button className="text-green-700 uppercase">Edit</button>
+                </div>
+              </div>
+            );
+        })}
+        </div>
+      }
     </div>
   );
 }
