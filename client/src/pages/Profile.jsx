@@ -160,21 +160,21 @@ export default function Profile() {
     }
   };
 
-  const handleListingDelete= async(listingId)=>{
-    try{
+  const handleListingDelete = async (listingId) => {
+    try {
       setShowListingError(false);
-      const res= await fetch(`/api/listing/delete/${listingId}`,{
-        method:"DELETE",
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: "DELETE",
       });
-      const data= await res.json();
-      if(data.success === false){
+      const data = await res.json();
+      if (data.success === false) {
         setShowListingError(true);
         return;
       }
-      setUserListing((prev)=>{
-        return prev.filter((listing)=>listing._id!==listingId);
+      setUserListing((prev) => {
+        return prev.filter((listing) => listing._id !== listingId);
       });
-    }catch(error){
+    } catch (error) {
       setShowListingError(true);
     }
   };
@@ -279,10 +279,11 @@ export default function Profile() {
       <p className="text-red-700 mt-3">
         {showListingError ? "Error showing listings" : ""}
       </p>
-      {userListing &&
-        userListing.length > 0 &&
+      {userListing && userListing.length > 0 && (
         <div className="flex flex-col gap-4">
-          <h1 className="text-center text-2xl font-semibold mt-7">Your Listings</h1>
+          <h1 className="text-center text-2xl font-semibold mt-7">
+            Your Listings
+          </h1>
           {userListing.map((listing) => {
             return (
               <div
@@ -303,14 +304,21 @@ export default function Profile() {
                   <p>{listing.name}</p>
                 </Link>
                 <div className="flex flex-col items-center">
-                  <button onClick={()=>handleListingDelete(listing._id)} className="text-red-700 uppercase">Delete</button>
-                  <button className="text-green-700 uppercase">Edit</button>
+                  <button
+                    onClick={() => handleListingDelete(listing._id)}
+                    className="text-red-700 uppercase"
+                  >
+                    Delete
+                  </button>
+                  <Link to={`/update-listing/${listing._id}`}>
+                    <button className="text-green-700 uppercase">Edit</button>
+                  </Link>
                 </div>
               </div>
             );
-        })}
+          })}
         </div>
-      }
+      )}
     </div>
   );
 }
