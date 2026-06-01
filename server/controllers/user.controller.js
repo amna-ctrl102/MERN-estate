@@ -8,20 +8,18 @@ const updateUser=async(req, res, next)=>{
         return next(errorHandler(401,"You can only update your account"));
     }
     try{
-        if(req.body.password){
-            req.body.password=await bcryptjs.hash(req.body.password,10);
-        }
         const id=req.params.id;
-        const{username, email, avatar}=req.body;
-        const updatedUser=await User.findByIdAndUpdate(id,{
-            $set:{
-                username, 
-                email, 
-                password:req.body.password,
-                avatar,
-            },
-        },{ returnDocument: "after" });
-        if(!updatedUser) return res.status(404).json(message,"user not found");
+        const{username, email, avatar, password:newPassword}=req.body;
+        const updatedData = { username, email, avatar };
+        if(newPassword){
+            updatedData.password=bcryptjs.hashSync(newPassword, 10)
+        }
+         const updatedUser=await User.findByIdAndUpdate(
+            id,
+            {$set:updatedData},
+            { returnDocument: "after" }
+        );
+        if(!updatedUser) return res.status(404).json({message:"user not found"});
         const { password:pass, ...rest } = updatedUser._doc;
         return res.status(200).json(rest);
     }catch(e){
