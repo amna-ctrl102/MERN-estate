@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
+import SwiperCore from "swiper";
 import "swiper/css/bundle";
 import { useSelector } from "react-redux";
 import Contact from "../components/Contact";
@@ -60,7 +60,7 @@ export default function Listing() {
             {listing.imageUrls.map((url) => {
               return (
                 <SwiperSlide key={url}>
-                  <div className="h-62.5 md:h-[100 lg:h-125">
+                  <div className="h-62.5 md:h-100 lg:h-125">
                     <img
                       src={url}
                       className="w-full object-contain"
