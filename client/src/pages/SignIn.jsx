@@ -39,25 +39,25 @@ export default function SignIn() {
   };
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl text-center font-semibold my-7">Sign In</h1>
+      <h1 className="text-3xl text-center font-semibold my-7 text-blue-950">Sign In</h1>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
         <input
           type="email"
           placeholder="email"
           id="email"
-          className="border p-3 rounded-lg"
+          className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
           onChange={handleChange}
         />
         <input
           type="password"
           placeholder="password"
           id="password"
-          className="border p-3 rounded-lg"
+          className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
           onChange={handleChange}
         />
         <button
           disabled={loading}
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          className="bg-blue-950 text-white font-semibold rounded-lg uppercase hover:opacity-95 p-3 hover:shadow-md transition disabled:opacity-80"
           type="submit"
         >
           {loading ? "Loading...." : "Sign In"}
@@ -65,9 +65,9 @@ export default function SignIn() {
         <OAuth />
       </form>
       <div className="flex gap-2">
-        <p>Dont have an account?</p>
+        <p className="text-blue-950">Dont have an account?</p>
         <Link to={"/sign-up"}>
-          <span className="text-blue-700">Sign up</span>
+          <span className="text-amber-500">Sign up</span>
         </Link>
       </div>
       {error && <p className="text-red-500 mt-5">{error}</p>}

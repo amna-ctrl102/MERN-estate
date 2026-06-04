@@ -123,23 +123,23 @@ export default function Search() {
 
   return (
     <div className="flex flex-col md:flex-row">
-      <div className="p-7 border-gray-200 border-b-2 md:border-r-2 md:min-h-screen">
+      <div className="p-7 border-blue-200 border-b md:border-r md:min-h-screen">
         <form onSubmit={handleSubmit} className="flex flex-col gap-7">
           <div className="flex items-center gap-2">
-            <label className="whitespace-nowrap font-semibold">
+            <label className="whitespace-nowrap text-blue-950 font-semibold">
               Search Term:{" "}
             </label>
             <input
               type="text"
               id="searchTerm"
               placeholder="Search..."
-              className="bg-white border border-gray-300 rounded-lg p-3 w-full"
+              className="bg-white border border-blue-200 rounded-lg p-3 w-full placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
               value={sideBarData.searchTerm}
               onChange={handleChange}
             />
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <label className="font-semibold">Type:</label>
+            <label className="font-semibold text-blue-950">Type:</label>
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -148,7 +148,7 @@ export default function Search() {
                 onChange={handleChange}
                 checked={sideBarData.type === "all"}
               />
-              <span>Rent & Sale</span>
+              <span className="text-blue-950">Rent & Sale</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -158,7 +158,7 @@ export default function Search() {
                 onChange={handleChange}
                 checked={sideBarData.type === "rent"}
               />
-              <span>Rent</span>
+              <span className="text-blue-950">Rent</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -168,7 +168,7 @@ export default function Search() {
                 onChange={handleChange}
                 checked={sideBarData.type === "sale"}
               />
-              <span>Sale</span>
+              <span className="text-blue-950">Sale</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -178,11 +178,11 @@ export default function Search() {
                 onChange={handleChange}
                 checked={sideBarData.offer}
               />
-              <span>Offer</span>
+              <span className="text-blue-950">Offer</span>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-wrap">
-            <label className="font-semibold">Amenities:</label>
+            <label className="font-semibold text-blue-950">Amenities:</label>
             <div className="flex gap-2">
               <input
                 type="checkbox"
@@ -191,7 +191,7 @@ export default function Search() {
                 onChange={handleChange}
                 checked={sideBarData.parking}
               />
-              <span>Parking</span>
+              <span className="text-blue-950">Parking</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -201,14 +201,14 @@ export default function Search() {
                 onChange={handleChange}
                 checked={sideBarData.furnished}
               />
-              <span>Furnished</span>
+              <span className="text-blue-950">Furnished</span>
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <label className="font-semibold">Sort:</label>
+            <label className="font-semibold text-blue-950">Sort:</label>
             <select
               id="sort_order"
-              className="bg-white border border-gray-200 rounded-lg p-3"
+              className="bg-white border border-blue-200 rounded-lg p-3 text-blue-950 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
               onChange={handleChange}
               defaultValue={"createdAt_desc"}
             >
@@ -218,23 +218,23 @@ export default function Search() {
               <option value="createdAt_asc">Oldest</option>
             </select>
           </div>
-          <button className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95">
+          <button className="bg-blue-950 text-white p-3 rounded-lg text-center font-semibold uppercase hover:opacity-95 hover:shadow-md transition">
             Search
           </button>
         </form>
       </div>
       <div className="flex-1">
-        <h1 className="text-slate-700 text-3xl font-semibold border-b p-3 border-gray-200 mt-5">
+        <h1 className="text-blue-950 text-3xl font-semibold border-b p-3 border-blue-200 mt-5">
           Listings Results:
         </h1>
         <div className="p-7 flex flex-wrap gap-4">
           {!loading && listings.length === 0 && (
-            <p className="text-xl text-slate-700 text-center w-full">
+            <p className="text-xl text-blue-9500 text-center w-full">
               No listing found!
             </p>
           )}
           {loading && (
-            <p className="text-xl text-slate-700 text-center w-full">
+            <p className="text-xl text-blue-950 text-center w-full">
               Loading...
             </p>
           )}
@@ -246,7 +246,7 @@ export default function Search() {
           {showMore && (
             <button
               onClick={onShowMoreClick}
-              className="text-green-700 hover:underline p-7 text-center w-full"
+              className="text-amber-500 hover:underline p-7 text-center w-full"
             >
               Show More
             </button>

@@ -156,7 +156,7 @@ export default function UpdateListing() {
   };
   return (
     <main className="p-3 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-7">
+      <h1 className="text-3xl font-semibold text-center my-7 text-blue-950">
         Update a Listing
       </h1>
       <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-4">
@@ -164,7 +164,7 @@ export default function UpdateListing() {
           <input
             type="text"
             placeholder="Name"
-            className="border p-3 rounded-lg"
+            className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
             id="name"
             maxLength="62"
             minLength="10"
@@ -175,7 +175,7 @@ export default function UpdateListing() {
           <textarea
             type="text"
             placeholder="Description"
-            className="border p-3 rounded-lg"
+            className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
             id="description"
             required
             onChange={handleChange}
@@ -184,7 +184,7 @@ export default function UpdateListing() {
           <input
             type="text"
             placeholder="Address"
-            className="border p-3 rounded-lg"
+            className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
             id="address"
             maxLength="62"
             minLength="10"
@@ -201,7 +201,7 @@ export default function UpdateListing() {
                 onChange={handleChange}
                 checked={formData.type === "sale"}
               />
-              <span>Sell</span>
+              <span className="text-blue-950">Sell</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -211,7 +211,7 @@ export default function UpdateListing() {
                 onChange={handleChange}
                 checked={formData.type === "rent"}
               />
-              <span>Rent</span>
+              <span className="text-blue-950">Rent</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -221,7 +221,7 @@ export default function UpdateListing() {
                 onChange={handleChange}
                 checked={formData.parking}
               />
-              <span>Parking spot</span>
+              <span className="text-blue-950">Parking spot</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -231,7 +231,7 @@ export default function UpdateListing() {
                 onChange={handleChange}
                 checked={formData.furnished}
               />
-              <span>Furnished</span>
+              <span className="text-blue-950">Furnished</span>
             </div>
             <div className="flex gap-2">
               <input
@@ -241,7 +241,7 @@ export default function UpdateListing() {
                 onChange={handleChange}
                 checked={formData.offer}
               />
-              <span>Offer</span>
+              <span className="text-blue-950">Offer</span>
             </div>
           </div>
           <div className="flex flex-wrap gap-4">
@@ -252,11 +252,11 @@ export default function UpdateListing() {
                 min="1"
                 max="10"
                 required
-                className="p-3 border border-gray-300 rounded-lg"
+                className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
                 onChange={handleChange}
                 value={formData.bedrooms}
               />
-              <p>Beds</p>
+              <p className="text-blue-950">Beds</p>
             </div>
             <div className="flex items-center gap-2">
               <input
@@ -265,11 +265,11 @@ export default function UpdateListing() {
                 min="1"
                 max="10"
                 required
-                className="p-3 border border-gray-300 rounded-lg"
+                className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
                 onChange={handleChange}
                 value={formData.bathrooms}
               />
-              <p>Baths</p>
+              <p className="text-blue-950">Baths</p>
             </div>
               <div className="flex items-center gap-2">
                 <input
@@ -278,13 +278,13 @@ export default function UpdateListing() {
                   min="0"
                   max="1000000"
                   required
-                  className="p-3 border border-gray-300 rounded-lg"
+                  className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
                   onChange={handleChange}
                   value={formData.regularPrice}
                 />
                 <div className="flex flex-col items-center">
-                  <p>Regular Price</p>
-                  <span className="text-xs">($/Month)</span>
+                  <p className="text-blue-950">Regular Price</p>
+                  <span className="text-xs text-gray-500">($/Month)</span>
                 </div>
               </div>
               {formData.offer &&(
@@ -295,29 +295,29 @@ export default function UpdateListing() {
                     min="0"
                     max="1000000"
                     required
-                    className="p-3 border border-gray-300 rounded-lg"
+                    className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
                     onChange={handleChange}
                     value={formData.discountPrice}
                   />
                   <div className="flex flex-col items-center">
-                    <p>Discount Price</p>
-                    <span className="text-xs">($/Month)</span>
+                    <p className="text-blue-950">Discount Price</p>
+                    <span className="text-xs text-gray-500">($/Month)</span>
                   </div>
                 </div>
               )} 
           </div>
         </div>
         <div className="flex flex-col flex-1 gap-4">
-          <p className="font-semibold">
+          <p className="font-semibold text-blue-950">
             Images:
-            <span className="text-gray-600 ml-2">
+            <span className="text-blue-500 ml-2">
               The first image will be the cover (max 6)
             </span>
           </p>
           <div className="flex gap-4">
             <input
               onChange={(e) => setFiles(Array.from(e.target.files))}
-              className="p-3 border border-gray-300 rounded w-full"
+              className="p-3 border border-blue-200 rounded w-full bg-white text-blue-950 hover:shadow-md transition"
               type="file"
               id="images"
               accept="image/*"
@@ -327,7 +327,7 @@ export default function UpdateListing() {
               type="button"
               onClick={handleImageUpload}
               disabled={uploading}
-              className="p-3 text-green-700 border border-green-700 rounded hover:shadow-lg disabled:opacity-80"
+              className="p-3 text-amber-500 border border-amber-500 rounded hover:bg-amber-500 hover:text-blue-950 transition-all disabled:opacity-80"
             >
               {uploading ? "Uploading.." : "Upload"}
             </button>
@@ -336,7 +336,7 @@ export default function UpdateListing() {
           {formData.imageUrls.map((url, index) => (
             <div
               key={index}
-              className="flex items-center justify-between p-3 border border-slate-300 gap-4 "
+              className="bg-white border border-blue-200 rounded-lg p-3 flex justify-between items-center gap-4 hover:shadow-md transition "
             >
               <img
                 src={url}
@@ -352,7 +352,7 @@ export default function UpdateListing() {
               </button>
             </div>
           ))}
-          <button disabled={loading || uploading} className="p-3 bg-slate-700 text-white uppercase rounded-lg hover:opacity-95 disabled:opacity-80">
+          <button disabled={loading || uploading} className="p-3 bg-blue-950 text-white font-semibold uppercase rounded-lg hover:opacity-95 disabled:opacity-80 hover:shadow-md transition">
             {loading?"Updating...":"Update Listing"}
           </button>
           {error && <p className="text-red-600 text-sm">{error}</p>}

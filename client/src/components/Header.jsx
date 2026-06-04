@@ -25,34 +25,34 @@ export default function Header() {
   },[location.search])
 
   return (
-    <header className="bg-slate-200 shadow-md">
+    <header className="bg-blue-950 shadow-md">
       <div className="flex justify-between items-center max-w-6xl mx-auto p-3">
         <Link to="/">
-          <h1 className="font-bold text-sm sm:text-xl flex flex-wrap">
-            <span className="text-slate-500">Elite</span>
-            <span className="text-slate-700">Estate</span>
+          <h1 className="font-bold text-sm sm:text-2xl flex flex-wrap">
+            <span className="text-amber-500">Elite</span>
+            <span className="text-white">Estate</span>
           </h1>
         </Link>
-        <form onSubmit={handleSubmit} className="bg-slate-100 p-3 rounded-lg flex items-center">
+        <form onSubmit={handleSubmit} className="bg-white p-3 rounded-lg flex items-center">
           <input
             type="text"
             placeholder="Search..."
-            className="bg-transparent focus:outline-none w-24 sm:w-64 font-semibold"
+            className="bg-transparent placeholder:text-gray-500 focus:outline-none w-24 sm:w-64 font-semibold"
             value={searchTerm}
             onChange={(e)=> setSearchTerm(e.target.value)}
           />
           <button>
-            <FaSearch className="text-slate-600" />
+            <FaSearch className="text-amber-500" />
           </button>
         </form>
         <ul className="flex gap-4">
           <Link to="/">
-            <li className="hidden sm:inline text-slate-700 hover:underline">
+            <li className="hidden sm:inline text-gray-100 hover:text-amber-500 transition-colors">
               Home
             </li>
           </Link>
           <Link to="/about">
-            <li className="hidden sm:inline text-slate-700 hover:underline">
+            <li className="hidden sm:inline text-gray-100 hover:text-amber-500 transition-colors">
               About
             </li>
           </Link>
@@ -60,9 +60,9 @@ export default function Header() {
             {currentUser ? <img
               src={ currentUser?.avatar || "https://static.vecteezy.com/system/resources/previews/046/409/821/non_2x/avatar-profile-icon-in-flat-style-male-user-profile-illustration-on-isolated-background-man-profile-sign-business-concept-vector.jpg"}
               alt="profile"
-              className="rounded-full h-7 w-7 object-cover"
+              className="rounded-full h-7 w-7 object-cover border-2 border-white"
             /> : (
-              <li className="text-slate-700 hover:underline">Sign in</li>
+              <li className="sm:inline text-gray-100 hover:text-amber-500 transition-colors">Sign in</li>
             )}
           </Link>
         </ul>

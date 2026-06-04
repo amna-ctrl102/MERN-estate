@@ -181,7 +181,7 @@ export default function Profile() {
 
   return (
     <div className="p-3 max-w-lg mx-auto">
-      <h1 className="text-3xl font-semibold text-center my-3">Profile</h1>
+      <h1 className="text-3xl text-blue-950 font-semibold text-center my-3">Profile</h1>
       <form className="flex flex-col gap-3" onSubmit={handleUpdate}>
         <input
           type="file"
@@ -224,7 +224,7 @@ export default function Profile() {
           placeholder="username"
           value={username}
           id="username"
-          className="border p-3 rounded-lg"
+          className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
@@ -232,25 +232,25 @@ export default function Profile() {
           placeholder="email"
           value={email}
           id="email"
-          className="border p-3 rounded-lg"
+          className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="password"
           id="password"
-          className="border p-3 rounded-lg"
+          className="border border-blue-200 p-3 rounded-lg bg-white text-blue-950 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-amber-500 hover:shadow-md transition"
           onChange={(e) => setpassword(e.target.value)}
         />
         <button
           disabled={loading}
-          className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          className="bg-blue-950 text-white font-semibold rounded-lg uppercase hover:opacity-95 p-3 hover:shadow-md transition"
           type="submit"
         >
-          {loading ? "loading..." : "Upadate"}
+          {loading ? "loading..." : "Update"}
         </button>
         <Link
-          className="bg-green-700 text-white p-3 rounded-lg text-center uppercase hover:opacity-95"
+          className="bg-amber-500 text-white p-3 rounded-lg text-center font-semibold uppercase hover:opacity-95 hover:shadow-md transition"
           to={"/create-listing"}
         >
           {" "}
@@ -273,7 +273,7 @@ export default function Profile() {
       <p className="text-green-700 mt-3">
         {updateUser ? "User updated Successfully" : ""}
       </p>
-      <button onClick={handleShowListings} className="text-green-700 w-full">
+      <button onClick={handleShowListings} className="text-amber-500 hover:text-amber-600 font-semibold w-full">
         Show Listings
       </button>
       <p className="text-red-700 mt-3">
@@ -281,14 +281,14 @@ export default function Profile() {
       </p>
       {userListing && userListing.length > 0 && (
         <div className="flex flex-col gap-4">
-          <h1 className="text-center text-2xl font-semibold mt-7">
+          <h1 className="text-center text-blue-950 text-2xl font-semibold mt-7">
             Your Listings
           </h1>
           {userListing.map((listing) => {
             return (
               <div
                 key={listing._id}
-                className=" border border-gray-200 rounded-lg p-3 flex justify-between items-center gap-4"
+                className=" bg-white border border-blue-200 rounded-lg p-3 flex justify-between items-center gap-4 hover:shadow-md transition"
               >
                 <Link to={`/listing/${listing._id}`}>
                   <img
