@@ -16,7 +16,9 @@ export default function Home() {
   useEffect(() => {
     const fetchOfferListing = async () => {
       try {
-        const res = await fetch("/api/listing/get?offer=true&limit=3");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/listing/get?offer=true&limit=3`,{
+          credentials:"include",
+        });
         const data = await res.json();
         setOfferListings(data.listings);
         fetchRentListing();
@@ -26,7 +28,9 @@ export default function Home() {
     };
     const fetchRentListing = async () => {
       try {
-        const res = await fetch("/api/listing/get?type=rent&limit=3");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/listing/get?type=rent&limit=3`,{
+          credentials:"include",
+        });
         const data = await res.json();
         setRentListings(data.listings);
         fetchSaleListing();
@@ -36,7 +40,9 @@ export default function Home() {
     };
     const fetchSaleListing = async () => {
       try {
-        const res = await fetch("/api/listing/get?type=sale&limit=3");
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/listing/get?type=sale&limit=3`,{
+          credentials:"include",
+        });
         const data = await res.json();
         setSaleListings(data.listings);
       } catch (error) {

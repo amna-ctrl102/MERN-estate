@@ -37,7 +37,11 @@ const signin = async (req, res, next) => {
     );
     const { password: pass, ...rest } = validUser._doc;
     res
-      .cookie("access_token", token, { httpOnly: true })
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+      })
       .status(200)
       .json(rest);
   } catch (error) {
@@ -57,7 +61,11 @@ const google = async (req, res, next) => {
       );
       const { password: pass, ...rest } = user._doc;
       res
-        .cookie("access_token", token, { httpOnly: true })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        })
         .status(200)
         .json(rest);
     } else {
@@ -71,7 +79,7 @@ const google = async (req, res, next) => {
           Math.random().toString(36).slice(-4),
         email: req.body.email,
         password: hashedPassword,
-        avatar:req.body.photo,
+        avatar: req.body.photo,
       });
       await newUser.save();
       const token = jwt.sign(
@@ -82,7 +90,11 @@ const google = async (req, res, next) => {
       );
       const { password: pass, ...rest } = newUser._doc;
       res
-        .cookie("access_token", token, { httpOnly: true })
+        .cookie("access_token", token, {
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
+        })
         .status(200)
         .json(rest);
     }
@@ -91,11 +103,11 @@ const google = async (req, res, next) => {
   }
 };
 
-const signOut=async(req,res,next)=>{
-  try{
+const signOut = async (req, res, next) => {
+  try {
     res.clearCookie("access_token");
-    return res.status(200).json({message:"User has been logged out"});
-  }catch(error){
+    return res.status(200).json({ message: "User has been logged out" });
+  } catch (error) {
     next(error);
   }
 };

@@ -4,8 +4,18 @@ const authRouter= require("./routes/auth.router.js");
 const userRouter=require("./routes/user.router.js");
 const listingRouter=require("./routes/listing.router.js");
 const cookieParser=require("cookie-parser");
+const cors = require('cors');
 require("dotenv").config();
 const app=express();
+
+app.use(cors({
+  origin: [
+    'https://mern-estate-frontend-lac.vercel.app', 
+    'http://localhost:5173'
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}));
 
 mongoose.connect(process.env.MONGO).then(()=>{
     console.log("Connected to Mongodb")
@@ -19,6 +29,10 @@ app.use(cookieParser());
 app.use("/api/auth",authRouter);
 app.use("/api/user",userRouter);
 app.use("/api/listing",listingRouter);
+
+app.get("/", (req, res) => {
+  res.send("API working 🚀");
+});
 
 app.use((err,req,res,next)=>{
     const statusCode=err.statusCode || 500;
